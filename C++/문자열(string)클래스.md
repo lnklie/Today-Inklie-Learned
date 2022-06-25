@@ -1,0 +1,85 @@
+문자열(string) 클래스에 대하여
+=======
+- C++ STL에서 제공하는 클래스, 문자열을 다루는 클래스
+- C에서는 char* 또는 char[]의 형태로 문자열을 다뤘지만, C++에서는 문자열을 하나의 변수 type으로 사용
+- char*, char[]과 다르게 문자열 끝에 '\0'문자가 들어가지 않음, 문자열의 길이를 동적으로 변경 가능
+
+string 클래스의 입/출력
+-------
+- C++입출력 방식은 cin, cout으로 입출력이 가능, getline함수도 이용할 수 있다.
+- scanf와 printf는 사용이 불가능
+
+``` c++
+// 문자열 생성
+string str;
+
+// 공백 이전까지의 문자열일 입력
+cin >> str;
+
+// '\n'이전까지의 문자열을 입력 받음, 한줄 통째로
+getline(cin, str); 
+
+// 'a'문자 이전까지의 문자열을 입력받음
+getline(cin, str, 'a') 
+
+// 문자열 출력
+cout << str;
+```
+
+string 클래스 생성
+------
+- string 헤더 파일 추가
+
+``` c++
+// 빈 문자열 생성
+string str;
+
+// "Inklie"로 선언된 str 생성
+string str = "Inklie";
+
+// 또는
+string str;
+str = "Inklie";
+
+// 생성자를 이용한 생성
+string str("Inklie");
+
+// 복사 생성자
+string str2("str1");
+
+// C 문자열과 호환도 가능
+char s[] = {'I', 'n', 'k', 'l', 'i', 'e'};
+string str(s);
+
+// new를 이용한 동적할당
+string *str = new string("Inklie");
+```
+
+- <,>, == 같은 연산자도 사용할 수 있음
+- <, >, == 는 사전 순서를 비교
+- +는 문자열을 이어는 역할
+
+멤버함수
+------
+- 참고 자료 참고
+
+활용 예제
+-----
+``` c++
+#include <iostream>
+using namespace std;
+
+int main(void)
+{
+	string _name;
+
+	cin >> _name;
+	if (_name.size() > 50)
+		return 0;
+	cout << _name + "??!";
+}
+```
+
+참고 자료
+------
+https://rebro.kr/53
