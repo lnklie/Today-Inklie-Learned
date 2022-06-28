@@ -11,7 +11,6 @@
 --------
 - 대리자는 C나 C++의 함수 포인터처럼 메소드를 안전하게 캡슐화하는 방식
 - 개체 지향적이고 형식이 안전하고 보안이 유지
-
 - 예제
 ```cs
 public delegate void Del(string message);
@@ -37,7 +36,7 @@ handler("Hello World");
 - 대리자 형식은 .NET의 Delegate 클래스에서 파생되며 봉인되어 있기에
 - Delegeate에서는 파생될 수 없고 해당 클래스에서 지정 클래스를 파생할 수도 없음
 - 인스턴스화된 대리자는 개체이므로 인수로 전달하거나 속성에 할당할 수 있음
-- 메소드가 대리자를 매개 변수로 허용하고 나둥에 대리자를 호출할 수 있음
+- 메소드가 대리자를 매개 변수로 허용하고 나중에 대리자를 호출할 수 있음
 - 비동기 콜백이라는 방식
 - 긴 프로세스 완료 시 호출자에게 알림을 제공하는 일반적인 방법
 - 대리자를 사용하는 코드가 사용 중인 메소드의 구현을 확인하지 않아도 됨
@@ -118,10 +117,99 @@ static void method(Delegate1 d, Delegate2 e, System.Delegate f)
 ```
 <br/><br/>
 
+명명된 메소드 와 무명 메소드
+-------------------
+- 대리자는 명명된 메소드에 연결될 수 있음
+- 명명된 메소드를 사용하여 대리자를 인스턴스화하면 메소드가 매개 변수로 전달
+```cs
+// 대리자의 선언
+delegate void Del(int x);
+
+// 명명된 메소드 정의
+void DoWork(int k){ ... };
+
+// 매개변수로 메소드 사용하는 대리자 인스턴스화
+Del d = obj.DoWork;
+```
+- 명명된 메소드를 사용하여 생성된 대리자는 정적 메소드 또는 인스턴스 메소드를 캡슐화할 수 있음
+- 새 메소드 생성이 불필요한 오버헤드인 경우 C#에서 대리자를 인스턴스화하고 호출 시 대리자에서 처리할 코드 블록을 즉시 지정할 수 있음
+- 블록에는 람다 식 또는 무명 메소드가 포함될 수 있음
+<br/><br/>
+- 대리자 매개 변수로 전달하는 메소드에는 대리자 선언과 동일한 시그니처가 있어야 함
+- 대리자 인스턴스는 정적 또는 인스턴스 메소드를 캡슐화할 수 있음
+>       대리자는 out 매개 변수를 사용할 수 있지만, 멀티캐스트 이벤트 대리자의 경우
+>       호출될 대리자를 알 수 없기 때문에 사용하지 않는 것이 좋음
+
+- C#10부터, 하나의 오버로드가 있는 메소드 그룹은 '자연 형식'을 가짐
+- 컴파일러는 대리자 형식의 반환 형식과 매개 변수 형식을 유추할 수 있음
+
+### 대리자 사용예제
+```cs
+// 대리자의 선언
+delegate void Del(int i, double j);
+
+class MathClass
+{
+    static void Main()
+    {
+        MathClass m =new MathClass();
+
+        // "MultiplyNumbers"메소드를 사용하여 대리자 객체화
+        Del d = m.MultiplyNumbers;
+
+        // 대리자 오브젝트 호출
+        Console.WriteLine("MultiplyNumbers메소드를 사용한 대리자의 호출: ");
+        for(int i = 0; i <= 5; i++)
+        {
+            d(i,2);
+        }
+
+        Console.WriteLine("Press any key to exit.");
+        Console.ReadyKey();
+    }
+
+    void MultiplyNumbers(int m, double n)
+    {
+        Console.Write(m * n + " ");
+    }
+}
+``` 
+``` cs
+delegate void Del();
+
+class SampleClass
+{
+    public void InstanceMethod()
+    {
+        Console.WriteLine("A message from ths instance method");
+    }
+
+    static public void StaticMethod()
+    {
+        Console.WriteLine("A message from the static method");
+    }
+}
+
+class TestSampleClass
+{
+    static void Main()
+    {
+        var sc = new SampleClass();
+
+        Del d = sc.InstanceMethod;
+        d();
+
+        d = SampleClass.StaticMethod;
+        d();
+    }
+}
+```
 유니티에서 대리자 사용
 --------
+- 사운드 처럼 광범위하게 사용하는 메소드가 있다면 대리자에 연결하여 사용할 수 있음
 
 참고자료
 ----------
 https://docs.microsoft.com/ko-kr/dotnet/csharp/programming-guide/delegates/    
-https://docs.microsoft.com/ko-kr/dotnet/csharp/programming-guide/delegates/using-delegates
+https://docs.microsoft.com/ko-kr/dotnet/csharp/programming-guide/delegates/using-delegates    
+https://geojun.tistory.com/64 - 유니티에서 대리자 사용
