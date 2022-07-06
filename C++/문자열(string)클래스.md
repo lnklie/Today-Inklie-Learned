@@ -58,6 +58,7 @@ string *str = new string("Inklie");
 - <,>, == 같은 연산자도 사용할 수 있음
 - <, >, == 는 사전 순서를 비교
 - +는 문자열을 이어는 역할
+- size()함수는 문자열 길이 출력
 
 멤버함수
 ------
@@ -77,6 +78,53 @@ int main(void)
 	if (_name.size() > 50)
 		return 0;
 	cout << _name + "??!";
+}
+```
+- 문자열 + 배열 활용
+``` c++
+#include <iostream>
+
+using namespace std;
+int main(void)
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int num = 0;
+    int num2 = 0;
+    int point = 0;
+    cin >> num;
+    int* totalNum = new int[num] {0,};
+    while (num2 < num)
+    {
+        string temp;
+        cin >> temp;
+        if (temp.size() < 0 || temp.size() > 80)
+            return 0;
+        for (int i = 0; i < temp.size(); i++)
+        {
+            if (temp[i] != 'O' && temp[i] != 'X')
+                return 0;
+            else
+            {
+                if (temp[i] == 'O')
+                {
+                    point++;
+                }
+                else
+                {
+                    point = 0;
+                }
+            }
+            totalNum[num2] += point;
+        }
+        num2++;
+        point = 0;
+    }
+    for (int i = 0; i < num2; i++)
+    {
+        cout << totalNum[i]<< endl;
+    }
 }
 ```
 
