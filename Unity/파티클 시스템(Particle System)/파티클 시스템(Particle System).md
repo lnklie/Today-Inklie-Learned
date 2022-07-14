@@ -182,4 +182,5 @@
 
 참고자료
 ------
-https://notyu.tistory.com/59
+https://notyu.tistory.com/59    
+https://docs.unity3d.com/kr/2019.4/Manual/ParticleSystemModules.html
