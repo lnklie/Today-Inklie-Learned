@@ -3,7 +3,34 @@
 - C++ STL에서 제공하는 클래스, 문자열을 다루는 클래스
 - C에서는 char* 또는 char[]의 형태로 문자열을 다뤘지만, C++에서는 문자열을 하나의 변수 type으로 사용
 - char*, char[]과 다르게 문자열 끝에 '\0'문자가 들어가지 않음, 문자열의 길이를 동적으로 변경 가능
+- string 은 문자를 += 하면 덧붙이게 된다!! 
+- 예제
+``` c++
+#include <iostream>
+#include <string.h>
+using namespace std;
 
+string code(int re, char s[20]) {
+	string result;
+	for (int i = 0; i < strlen(s); i++) {
+		for (int j = 0; j < re; j++) {
+			result += s[i];
+		}
+	}
+	return result;
+}
+
+int main() {
+	char s[20];
+	int n,repeat;
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		cin >> repeat >> s;
+		cout << code(repeat, s) << endl;
+	}
+	return 0;
+}
+```
 string 클래스의 입/출력
 -------
 - C++입출력 방식은 cin, cout으로 입출력이 가능, getline함수도 이용할 수 있다.
@@ -125,6 +152,66 @@ int main(void)
     {
         cout << totalNum[i]<< endl;
     }
+}
+```
+
+### 문자열 + 2차원 배열 관련 예제
+
+``` c++
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+bool isAlphaNumeric(char* str)
+{
+	char* alpa = new char[] {"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\\$%*+-./:"};
+	bool _bool = false;
+	for (int i = 0; i < strlen(str); i++)
+	{
+		for (int j = 0; j < strlen(alpa); j++)
+		{
+			if (str[i] == alpa[j])
+				_bool = true;
+		}
+	}
+	return _bool;
+}
+int main()
+{
+	int testNum = 0;
+	cin >> testNum;
+	char** save = new char* [testNum];
+	for (int i = 0; i < testNum; i++)
+		save[i] = new char[61]{};
+	int index = 0;
+	while (index < testNum)
+	{
+		int num = 0;
+		cin >> num;
+		char a[21];
+		cin >> a;
+		if (!isAlphaNumeric(a))
+			return 0;
+		char* temp = new char[strlen(a) * num + 1];
+
+		int c = 0;
+		for (int i = 0; i < strlen(a) + 1; i++)
+		{
+			for (int j = 0; j < num; j++)
+			{
+				temp[c + j] = a[i];
+			}
+			c += num;
+		}
+
+		save[index] = temp;
+		
+		index++;
+	}
+	for (int i = 0; i < testNum; i++)
+	{
+		cout << save[i] << endl;
+	}
 }
 ```
 
