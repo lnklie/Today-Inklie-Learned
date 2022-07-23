@@ -28,7 +28,7 @@ Color(색)을 입힌다(Multiply).
 
 ​
 
-# 프레넬 효과(Fresnel Effect)
+### 프레넬 효과(Fresnel Effect)
 https://docs.unity3d.com/kr/current/Manual/StandardShaderFresnel.html
 
 참고 영상
