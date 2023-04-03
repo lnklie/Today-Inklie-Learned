@@ -8,4 +8,4 @@ Cosine에 대하여
 
 활용
 ----
-- Mathf.Cos ()
+- Mathf.Cos (https://github.com/lnklie/Today-Inklie-Learned/blob/main/Unity/Mathf/Mathf.Cos.md)
