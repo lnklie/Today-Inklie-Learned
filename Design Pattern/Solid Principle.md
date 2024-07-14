@@ -129,10 +129,11 @@ public class Item : IItem, IAutoAbleItem
     }
 }
 
-public class TestPlayer  : MonoBehaviour
+public class TestPlayer : MonoBehaviour
 {
     private IItem item = null;
     private IAutoAbleItem autoItem = null;
+
     public void Start()
     {
         Item newItem = new Item();
@@ -164,3 +165,55 @@ public class TestPlayer  : MonoBehaviour
 - 그리고 흔히 말하는 클래스간의 결합도를 낮추는 것은 중요하기에 좋은 역할을 할 수 있다.
 - 앞서 한 예시는 해당 OCP를 적용하기에 어울리지는 않는 것 같다.
 - 좀 더 적절한 사용처를 찾아봐야 할 것 같다.
+
+### 3. 인터페이스 분리 원칙(ISP, Interface Segregation Principle)
+- 목적과 관심이 각기 다른 클라이언트가 있다면 인터페이스를 통해 적절하게 분리해야 한다는 것
+- 클라이언트의 목적과 용도에 적합한 인터페이스 만을 제공
+- 클라이언트는 자신이 사용하지 않는 메소드에 의존하지 않아야 한다는 것
+- 장점 : 
+1. 클라이언트 별로 필요한 기능만을 구현할 수 있기에 유연성이 상승
+2. 불필요한 기능을 최소화 시켜 코드를 수정 및 확장할 때 더욱 편리
+
+#### 내가 만들어본 예시 코드
+- 타워 디펜스 게임을 만든다고 가정하자
+- 타워는 공격이 가능하지만 움직일 수 없다.
+- 하지만 몰려오는 몬스터는 공격도 가능하고 움직일 수 있다.
+```C#
+public interface IAttackAble
+{
+    void Attack()
+}
+
+public interface IMovaAble
+{
+    void Move()
+}
+
+public class Tower : IAttackAble
+{
+    public void Attack()
+    {
+
+    }
+}
+
+public class Monster : IAttackAble, IMoveAble
+{
+    public void Attack()
+    {
+
+    }
+
+    public void Move()
+    {
+
+    }
+}
+```
+
+#### 인터페이스 분리 원칙에 대한 생각
+- 유니티에서 해당 원칙을 주로 사용하는 부분은 UI이다.
+- 컴포넌트에서 하는 방법도 있지만 드래그, 클릭 등을 인터페이스로 추가한다면
+- 쉽게 기능 구현이 가능하다.
+- 나도 어떤 오브젝트에서 필요하지 않은 메소드지만 상속되어 있다는 이유로 해당 클래스에서 호출이 가능하도록 한 적이 있다.
+- 굉장히 껄끄러웠는데 인터페이스를 추가함으로서 해결이 가능할 것 같다.
