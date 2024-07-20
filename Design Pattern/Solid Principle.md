@@ -173,6 +173,7 @@ public class TestPlayer : MonoBehaviour
 - 장점 : 
 1. 클라이언트 별로 필요한 기능만을 구현할 수 있기에 유연성이 상승
 2. 불필요한 기능을 최소화 시켜 코드를 수정 및 확장할 때 더욱 편리
+- (출처 : https://mangkyu.tistory.com/194)
 
 #### 내가 만들어본 예시 코드
 - 타워 디펜스 게임을 만든다고 가정하자
@@ -216,4 +217,71 @@ public class Monster : IAttackAble, IMoveAble
 - 컴포넌트에서 하는 방법도 있지만 드래그, 클릭 등을 인터페이스로 추가한다면
 - 쉽게 기능 구현이 가능하다.
 - 나도 어떤 오브젝트에서 필요하지 않은 메소드지만 상속되어 있다는 이유로 해당 클래스에서 호출이 가능하도록 한 적이 있다.
-- 굉장히 껄끄러웠는데 인터페이스를 추가함으로서 해결이 가능할 것 같다.
+- 굉장히 껄끄러웠는데 인터페이스를 추가하여 기능적으로 분리를 시킨다면 해결이 가능할 것 같다.
+
+### 리스코프 치환 원칙 (LSP, Liskov Substitution Principle)
+- 서브 타입은 언제나 기반 타입으로 교체할 수 있어야 한다는 것
+- 프로그램의 정확성을 깨트리지 않고도 자식 클래스 객체를 부모 클래스 객체로 치환이 가능해야한다.
+- 이 원칙을 깨는 경우는 여러가지 있다.
+``` C#
+// 상위 클래스에서 선언한 기능을 위반하는 경우
+public class Character
+{
+    public virtual void AttackEnemy()
+    {
+        // 적을 공격
+    }
+}
+
+public class Warrior : Character
+{
+    public override void AttackEnemy()
+    {
+        // 무기로 공격
+    }
+}
+
+public class Healer : Character
+{
+    public override void AttackEnemy()
+    {
+        // 아군을 힐
+    }
+}
+
+// 상위 클래스에서 예상되는 동작을 자식 클래스에서 제공하지 않는 경우
+public class Warrior
+{
+    protected int hp = 0;
+    protected int mana = 0;
+    public virtual void UseSkill()
+    {
+        if(mana <= 0)
+        {
+            Debug.Log("마나가 부족합니다.")
+            return;
+        }
+        Debug.Log("스킬 사용")
+    }
+}
+public class BloodWarrior : Warrior
+{
+    
+    public override void UseSkill()
+    {
+        if(hp <= 0)
+        {
+            Debug.Log("체력이 부족합니다.")
+            return;
+        }
+        throw new System.NotImplementedException("BloodWarrior는 이 스킬을 사용할 수 없습니다.");
+    }
+}
+
+```
+- 이외에도 입,출력 및 예외에 대한 상위 클래스의 계약을 위반하는 경우
+- 하위 클래스 주석에 나열된 지침을 위반하는 경우가 있다.
+
+#### 리스코프 치환 원칙에 대한 생각
+- 상위 클래스에서 기대하는 기능(메소드)을 하위 클래스에서 호출할 때 에러나 막힘없이 호출이 되어야한다는 것이 핵심이다.
+- 그렇기에 하위 클래스의 기능이 상위 클래스의 기능이 축소 및 제한이 된다면 예외처리를 잘 해주어야겠다.
